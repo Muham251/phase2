@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+:root {
+  /* Light Theme */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #334155;
+  --popover: #ffffff;
+  --popover-foreground: #334155;
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #475569;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #ede9fe;
+  --accent-foreground: #334155;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #6366f1;
+  --radius: 0.5rem;
+
+  /* Light-friendly gradients */
+  --gradient-primary: linear-gradient(135deg, #6366f1, #8b5cf6);
+  --gradient-secondary: linear-gradient(135deg, #06b6d4, #3b82f6);
+  --gradient-accent: linear-gradient(135deg, #8b5cf6, #ec4899);
+
+  /* Glassmorphism for light theme */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(148, 163, 184, 0.25);
+}
+
+/* Dark Theme */
+[data-theme='dark'] {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card: #1e293b;
+  --card-foreground: #cbd5e1;
+  --popover: #1e293b;
+  --popover-foreground: #cbd5e1;
+  --primary: #a78bfa;
+  --primary-foreground: #ffffff;
+  --secondary: #334155;
+  --secondary-foreground: #94a3b8;
+  --muted: #334155;
+  --muted-foreground: #64748b;
+  --accent: #475569;
+  --accent-foreground: #e2e8f0;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #334155;
+  --input: #334155;
+  --ring: #a78bfa;
+
+  /* Dark-friendly gradients */
+  --gradient-primary: linear-gradient(135deg, #a78bfa, #c084fc);
+  --gradient-secondary: linear-gradient(135deg, #22d3ee, #60a5fa);
+  --gradient-accent: linear-gradient(135deg, #c084fc, #f472b6);
+
+  /* Glassmorphism for dark theme */
+  --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(71, 85, 105, 0.25);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius: var(--radius);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ensure input text is visible */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  color: var(--foreground);
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: var(--muted-foreground);
+}
+
+/* Glassmorphism classes - light mode */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Gradient backgrounds */
+.bg-gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.bg-gradient-secondary {
+  background: var(--gradient-secondary);
+}
+
+.bg-gradient-accent {
+  background: var(--gradient-accent);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}

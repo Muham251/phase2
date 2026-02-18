@@ -1,0 +1,252 @@
+openapi: 3.1.0
+info:
+  title: Task API
+  version: 1.0.0
+  description: A RESTful API to manage tasks with strict user isolation.
+paths:
+  /users/{user_id}/tasks:
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: The unique identifier of the user.
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags:
+        - Tasks
+      summary: List all tasks for a specific user
+      operationId: listUserTasks
+      responses:
+        "200":
+          description: A list of tasks owned by the user.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+        "404":
+          description: The specified user was not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags:
+        - Tasks
+      summary: Create a new task for a user
+      operationId: createTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskCreate"
+      responses:
+        "201":
+          description: The task was created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "422":
+          description: Validation error. The request body is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /users/{user_id}/tasks/{task_id}:
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: The unique identifier of the user who owns the task.
+        schema:
+          type: string
+          format: uuid
+      - name: task_id
+        in: path
+        required: true
+        description: The unique identifier of the task.
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags:
+        - Tasks
+      summary: Get a specific task by its ID
+      operationId: getTaskById
+      responses:
+        "200":
+          description: The requested task.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          description: The task was not found or does not belong to the user.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      tags:
+        - Tasks
+      summary: Update a task
+      operationId: updateTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskUpdate"
+      responses:
+        "200":
+          description: The task was updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          description: The task was not found or does not belong to the user.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: Validation error. The request body is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - Tasks
+      summary: Delete a task
+      operationId: deleteTask
+      responses:
+        "204":
+          description: The task was deleted successfully.
+        "404":
+          description: The task was not found or does not belong to the user.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The unique identifier for the task.
+          readOnly: true
+        title:
+          type: string
+          description: The title of the task.
+        description:
+          type: string
+          nullable: true
+          description: A detailed description of the task.
+        completed:
+          type: boolean
+          default: false
+          description: The completion status of the task.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp of when the task was created (UTC).
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp of the last update (UTC).
+          readOnly: true
+        user_id:
+          type: string
+          format: uuid
+          description: The ID of the user who owns the task.
+          readOnly: true
+      required:
+        - id
+        - title
+        - completed
+        - created_at
+        - updated_at
+        - user_id
+
+    TaskCreate:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the task.
+        description:
+          type: string
+          nullable: true
+          description: A detailed description of the task.
+      required:
+        - title
+
+    TaskUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The new title for the task.
+        description:
+          type: string
+          nullable: true
+          description: The new description for the task.
+        completed:
+          type: boolean
+          description: The new completion status for the task.
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: An internal error code.
+        message:
+          type: string
+          description: A human-readable error message.
+      required:
+        - message
