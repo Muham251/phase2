@@ -17,7 +17,7 @@ export interface User {
 }
 
 export interface Task {
-  completed: any;
+  completed: unknown;
   updatedAt: string | number | Date;
   createdAt: string | number | Date;
   id: number;
@@ -38,4 +38,10 @@ export interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
+}
+
+export interface ErrorResponse {
+  message: string;
+  errors?: Record<string, string[]>;
+  status?: number;
 }
