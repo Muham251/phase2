@@ -69,7 +69,7 @@ export default function TaskList({ onEdit }: TaskListProps) {
                   </GradientButton>
                   <GradientButton
                     onClick={() => handleDelete(task.id)}
-                    variant="danger"
+                    variant="secondary"
                     animate={true}
                   >
                     Delete
