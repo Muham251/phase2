@@ -24,3 +24,11 @@ export interface Task {
   priority?: "low" | "medium" | "high";
   tags?: string[];
 }
+
+export interface AuthContextType {
+  user: User | null;
+  token: string | null;
+  loading: boolean;
+  login: (token: string, user: User) => void;
+  logout: () => void;
+}
