@@ -16,17 +16,18 @@ export interface User {
   updatedAt?: string | number | Date; 
 }
 
+
 export interface Task {
-  completed: unknown;
-  updatedAt: string | number | Date;
-  createdAt: string | number | Date;
   id: number;
   title: string;
-  description: string;
-  status: "pending" | "completed";
+  description?: string;
+  completed: boolean; 
+  status?: "pending" | "completed";
   due_date?: string;
   priority?: "low" | "medium" | "high";
   tags?: string[];
+  createdAt?: string | number | Date;
+  updatedAt?: string | number | Date;
 }
 
 export interface AuthContextType {
@@ -34,7 +35,6 @@ export interface AuthContextType {
   token: string | null;
   isAuthenticated: boolean;
   loading: boolean;
-  // Updated to match your provider's logic
   login: (email: string, password: string) => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
