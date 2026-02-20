@@ -5,7 +5,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '../../../../components/providers/auth-provider';
 import { Task } from '../../../../lib/types';
 import { apiClient } from '../../../../lib/api/client';
-import { dt } from 'framer-motion/client';
 
 const TaskDetailPage: React.FC = () => {
   const { id } = useParams();
@@ -130,7 +129,7 @@ const TaskDetailPage: React.FC = () => {
               <div className="bg-slate-50/50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-slate-500">Due Date</dt>
                 <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2">
-                  {task.due_date ? new Date(task.due_date).toLocaleDateString() : 'No due date'}
+                  {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'}
                 </dd>
               </div>
               <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

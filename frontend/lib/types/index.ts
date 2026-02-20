@@ -14,8 +14,6 @@ export interface User {
 }
 
 export interface Task {
-  createdAt: string | number | Date;
-  completed: any;
   id: number;
   title: string;
   description: string;
