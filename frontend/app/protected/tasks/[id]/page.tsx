@@ -135,13 +135,13 @@ const TaskDetailPage: React.FC = () => {
               <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-slate-500">Created</dt>
                 <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2">
-                  {new Date(task.createdAt).toLocaleString()}
+               {task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}
                 </dd>
               </div>
               <div className="bg-slate-50/50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-slate-500">Last Updated</dt>
                 <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2">
-                  {new Date(task.updatedAt).toLocaleString()}
+                  {task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}
                 </dd>
               </div>
             </dl>
