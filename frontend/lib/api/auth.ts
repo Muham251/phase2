@@ -20,7 +20,7 @@ export const authApi = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: new URLSearchParams(data),
+     body: new URLSearchParams(data as unknown as Record<string, string>),
     });
     return response.json();
   },
