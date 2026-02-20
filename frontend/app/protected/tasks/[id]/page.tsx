@@ -9,7 +9,7 @@ import { apiClient } from '../../../../lib/api/client';
 const TaskDetailPage: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
-  const { token } = useAuth();
+  useAuth();
   const [task, setTask] = useState<Task | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -104,11 +104,11 @@ const TaskDetailPage: React.FC = () => {
                 <dt className="text-sm font-medium text-slate-500">Status</dt>
                 <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    task.completed
+                   task.status === 'completed'
                       ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                       : 'bg-amber-50 text-amber-700 border border-amber-200'
                   }`}>
-                    {task.completed ? 'Completed' : 'Pending'}
+                  {task.status === 'completed' ? 'Completed' : 'Pending'}
                   </span>
                 </dd>
               </div>
@@ -129,7 +129,7 @@ const TaskDetailPage: React.FC = () => {
               <div className="bg-slate-50/50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-slate-500">Due Date</dt>
                 <dd className="mt-1 text-sm text-slate-900 sm:mt-0 sm:col-span-2">
-                  {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'}
+                  {task.due_date ? new Date(task.due_date).toLocaleDateString() : 'No due date'}
                 </dd>
               </div>
               <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
