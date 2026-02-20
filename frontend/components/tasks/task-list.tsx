@@ -5,7 +5,6 @@ import { Task } from '../../lib/types';
 import { apiClient } from '../../lib/api/client';
 import { Spinner } from '../ui/spinner';
 import { TaskCard } from './task-card';
-import { GlassCard } from '@/src/components/ui/glass-card';
 import { GradientButton } from '@/src/components/ui/gradient-button';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -83,7 +82,8 @@ export const TaskList: React.FC<TaskListProps> = ({ userId }) => {
         </div>
         <h3 className="text-lg font-semibold text-foreground mb-2">No tasks yet</h3>
         <p className="text-sm text-muted-foreground mb-6">Get started by creating your first task.</p>
-        <GradientButton variant="primary">
+      
+        <GradientButton variant="secondary">
           Create Your First Task
         </GradientButton>
       </motion.div>
