@@ -87,7 +87,7 @@ const EditTaskPage: React.FC = () => {
     title: task.title,
     description: task.description || '',
     priority: task.priority || 'medium',
-    dueDate: task.dueDate || '',
+    dueDate: task.due_date || '',
   };
 
   return (
