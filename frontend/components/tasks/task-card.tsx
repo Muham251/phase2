@@ -33,7 +33,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate }) => {
     if (window.confirm('Are you sure you want to delete this task?')) {
       try {
         setLoading(true);
-        await apiClient.deleteTask(task.id);
+     await apiClient.deleteTask(String(task.id));
 
         // Remove the task from the parent component's state
        onUpdate((prev: Task[]) => prev.filter(t => t.id !== task.id));
@@ -48,10 +48,12 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate }) => {
   const handleSaveEdit = async () => {
     try {
       setLoading(true);
-      const updatedTask = await apiClient.updateTask(task.id, {
+      // Fixed: Wrapped task.id in String() to resolve type error
+      const updatedTask = await apiClient.updateTask(String(task.id), {
         title: editedTitle,
         description: editedDescription,
       });
+
 
       // Update the task in the parent component's state
      onUpdate((prev: Task[]) => prev.map(t => t.id === task.id ? updatedTask : t));
@@ -86,7 +88,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate }) => {
       transition={{ duration: 0.3 }}
       className="w-full"
     >
-      <GlassCard variant="elevated" animate={false} className={`p-5 ${task.completed ? 'opacity-75' : ''}`}>
+        <GlassCard variant="elevated" animate={false} className={`p-5 ${task.completed ? 'opacity-75' : ''}`}>
         {isEditing ? (
           <motion.div
             initial={{ opacity: 0 }}
@@ -147,9 +149,9 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate }) => {
                     {task.description}
                   </p>
                 )}
-                {task.dueDate && (
+                {task.due_date && (
                   <p className="text-xs text-foreground/60 mt-2">
-                    Due: {formatDate(task.dueDate)}
+                    Due: {formatDate(task.due_date)}
                   </p>
                 )}
               </div>
@@ -192,3 +194,14 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate }) => {
     </motion.div>
   );
 };
+
+
+
+
+
+
+
+
+
+
+

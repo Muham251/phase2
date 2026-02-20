@@ -17,6 +17,7 @@ export interface User {
 }
 
 export interface Task {
+  completed: any;
   updatedAt: string | number | Date;
   createdAt: string | number | Date;
   id: number;
