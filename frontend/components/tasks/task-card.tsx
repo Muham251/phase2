@@ -19,7 +19,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate }) => {
   const handleToggleComplete = async () => {
   try {
     setLoading(true);
-    const updatedTask = await apiClient.toggleTaskCompletion(task.id);
+   const updatedTask = await apiClient.toggleTaskCompletion(String(task.id));
       // Update the task in the parent component's state
      onUpdate((prev: Task[]) => prev.map(t => t.id === task.id ? updatedTask : t));
     } catch (error) {
