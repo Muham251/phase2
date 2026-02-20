@@ -11,7 +11,9 @@ export interface LoginFormValues {
 export interface User {
   id: string;
   email: string;
-  name?: string; 
+  name?: string;
+  createdAt?: string | number | Date; 
+  updatedAt?: string | number | Date; 
 }
 
 export interface Task {
