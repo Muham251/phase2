@@ -28,7 +28,10 @@ export interface Task {
 export interface AuthContextType {
   user: User | null;
   token: string | null;
+  isAuthenticated: boolean;
   loading: boolean;
-  login: (token: string, user: User) => void;
+  // Updated to match your provider's logic
+  login: (email: string, password: string) => Promise<void>;
+  signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
 }
