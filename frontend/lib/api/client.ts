@@ -42,38 +42,41 @@ class ApiClient {
     try {
       const response = await fetch(url, config);
 
-      if (response.status === 401) {
-        const error: ErrorResponse = {
-          error: 'Unauthorized',
-          code: 'AUTH_REQUIRED',
-        };
-        toast.error('Session expired. Please log in again.');
-        this.removeToken();
-        // Optionally redirect to login page
-        // window.location.href = '/auth/login';
-        throw error;
-      }
+
+if (response.status === 401) {
+  const error: ErrorResponse = {
+    message: 'Unauthorized',
+    errors: { auth: ['Unauthorized'] },
+    status: 401,
+  };
+
+  toast.error('Session expired. Please log in again.');
+  this.removeToken();
+  throw error;
+}
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
 
-        // Handle specific error messages with user-friendly notifications
         let errorMessage = 'An error occurred';
+
         if (errorData.detail) {
-          errorMessage = typeof errorData.detail === 'string'
-            ? errorData.detail
-            : (Array.isArray(errorData.detail) ? errorData.detail[0]?.msg || 'Validation error' : 'Request failed');
+          errorMessage =
+            typeof errorData.detail === 'string'
+              ? errorData.detail
+              : Array.isArray(errorData.detail)
+              ? errorData.detail[0]?.msg || 'Validation error'
+              : 'Request failed';
         } else if (errorData.message) {
           errorMessage = errorData.message;
         }
 
         toast.error(errorMessage);
-        throw { ...errorData, message: errorMessage };
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();
 
-      // Show success notifications for certain operations
       if (options.method === 'POST' && endpoint.includes('/auth/signup')) {
         toast.success('Account created successfully!');
       } else if (options.method === 'POST' && endpoint.includes('/auth/login')) {
@@ -87,83 +90,60 @@ class ApiClient {
       }
 
       return result;
-    } catch (error) {
-      console.error(`API request failed: ${url}`, error);
+    } catch (err: unknown) {
+      console.error(`API request failed: ${url}`, err);
 
-      // Handle network errors
-      if (error instanceof TypeError && error.message.includes('fetch')) {
+      if (err instanceof TypeError) {
         toast.error('Network error. Please check your connection and try again.');
-        throw new Error('Network error: Unable to connect to the server');
+        throw new Error('Network error');
       }
-
-      // Don't re-throw the error if it was already handled with toast
-      throw error;
-    }
+      if ((err as ErrorResponse).message) {
+    throw err;
   }
 
-  // =========================
-  // AUTHENTICATION
-  // =========================
-
-  async signup(userData: {
-    name: string;
-    email: string;
-    password: string;
-  }) {
-    try {
-      const response = await this.request<{
-        access_token?: string;
-        token?: string;
-        expires_in?: number;
-        user?: any;
-      }>('/api/v1/auth/signup', {
-        method: 'POST',
-        body: JSON.stringify(userData),
-      });
-
-      const token = response.access_token || response.token;
-
-      // 🔐 token set karo
-      if (token) {
-        this.setToken(token);
-      }
-
-      // Return the user data directly from the response instead of making an extra call
-      return {
-        user: response.user ? transformUserToUserType(response.user) : null,
-        token,
-        expiresIn: response.expires_in,
-      };
-    } catch (error) {
-      console.error('Signup failed:', error);
-      throw error;
+      throw new Error('Unexpected error occurred');
     }
+  }
+  
+
+  
+
+
+  // AUTH
+  async signup(userData: { name: string; email: string; password: string }) {
+    const response = await this.request<AuthResponse>('/api/v1/auth/signup', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+    });
+
+    const token = response.access_token || response.token;
+    if (token) this.setToken(token);
+
+    return {
+      user: response.user
+        ? transformUserToUserType(response.user)
+        : null,
+      token,
+      expiresIn: response.expires_in,
+    };
   }
 
   async login(credentials: { email: string; password: string }) {
-    try {
-      const response = await this.request<{ access_token?: string; token?: string; expires_in?: number }>('/api/v1/auth/login/', {
-        method: 'POST',
-        body: JSON.stringify(credentials),
-      });
+    const response = await this.request<AuthResponse>('/api/v1/auth/login/', {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+    });
 
-      const token = response.access_token || response.token;
+    const token = response.access_token || response.token;
+    if (token) this.setToken(token);
 
-      if (token) {
-        this.setToken(token);
-      }
+    const me = await this.getCurrentUser();
 
-      const me = await this.getCurrentUser();
-
-      return {
-        user: me.user,
-        token,
-        expiresIn: response.expires_in,
-      };
-    } catch (error) {
-      console.error('Login failed:', error);
-      throw error;
-    }
+    return {
+      user: me.user,
+      token,
+      expiresIn: response.expires_in,
+    };
   }
 
   async logout() {
@@ -177,35 +157,13 @@ class ApiClient {
   }
 
   async getCurrentUser() {
-    const response= await this.request('/api/v1/auth/me');
-
-    return {
-      user: transformUserToUserType(response),
-    };
+    const response = await this.request('/api/v1/auth/me');
+    return { user: transformUserToUserType(response) };
   }
 
-  // =========================
   // TASKS
-  // =========================
-
-  async getTasks(params?: {
-    page?: number;
-    limit?: number;
-    filter?: string;
-    sort?: string;
-  }) {
-    const queryParams = new URLSearchParams();
-
-    if (params?.page) queryParams.append('page', params.page.toString());
-    if (params?.limit) queryParams.append('limit', params.limit.toString());
-    if (params?.filter) queryParams.append('filter', params.filter);
-    if (params?.sort) queryParams.append('sort', params.sort);
-
-    const queryString = queryParams.toString();
-    const endpoint = `/api/v1/todos/${queryString ? `?${queryString}` : ''}`;
-
-    const response= await this.request(endpoint);
-
+  async getTasks() {
+    const response = await this.request('/api/v1/todos/');
     return Array.isArray(response)
       ? transformTodosToTasks(response)
       : [];
@@ -230,16 +188,7 @@ class ApiClient {
     return transformTodoToTask(response);
   }
 
-  async updateTask(
-    id: string,
-    taskData: Partial<{
-      title: string;
-      description?: string;
-      completed?: boolean;
-      priority?: string;
-      dueDate?: string;
-    }>
-  ) {
+  async updateTask(id: string, taskData: Partial<Task>) {
     const response = await this.request(`/api/v1/todos/${id}`, {
       method: 'PUT',
       body: JSON.stringify(taskData),
@@ -251,16 +200,17 @@ class ApiClient {
   async toggleTaskCompletion(id: string) {
     const response = await this.request(
       `/api/v1/todos/${id}/toggle-complete`,
-      {
-        method: 'PATCH',
-      }
+      { method: 'PATCH' }
     );
 
-    // Show success notification based on the completion status
     const task = transformTodoToTask(response);
-    toast.success(task.completed ? 'Task marked as completed!' : 'Task marked as incomplete!');
+    toast.success(
+      task.completed
+        ? 'Task marked as completed!'
+        : 'Task marked as incomplete!'
+    );
 
-    return transformTodoToTask(response);
+    return task;
   }
 
   async deleteTask(id: string) {
@@ -271,3 +221,18 @@ class ApiClient {
 }
 
 export const apiClient = new ApiClient();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -45,3 +45,11 @@ export interface ErrorResponse {
   errors?: Record<string, string[]>;
   status?: number;
 }
+
+
+interface AuthResponse {
+  user?: User;
+  access_token?: string;
+  token?: string;
+  expires_in?: number;
+}
