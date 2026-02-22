@@ -15,7 +15,7 @@ interface TaskFormProps {
     title: string;
     description: string;
     priority: 'low' | 'medium' | 'high';
-    dueDate: string;
+    due_date: string;
   }>;
 }
 
@@ -30,7 +30,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
     title: initialData?.title || '',
     description: initialData?.description || '',
     priority: initialData?.priority || 'medium',
-    dueDate: initialData?.dueDate || '',
+    dueDate: initialData?.due_date || '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -53,7 +53,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
           title: formData.title,
           description: formData.description,
           priority: formData.priority,
-          dueDate: formData.dueDate || undefined,
+          due_date: formData.dueDate || undefined, 
         });
         if (onTaskUpdated) {
           onTaskUpdated(response);
@@ -64,7 +64,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
           title: formData.title,
           description: formData.description,
           priority: formData.priority,
-          dueDate: formData.dueDate || undefined,
+          due_date: formData.dueDate || undefined, // map to API
         });
         if (onTaskCreated) {
           onTaskCreated(response);

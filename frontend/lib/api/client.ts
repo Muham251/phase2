@@ -173,7 +173,7 @@ if (response.status === 401) {
     title: string;
     description?: string;
     priority?: string;
-    dueDate?: string;
+    due_date?: string;
   }) {
     const response = await this.request('/api/v1/todos/', {
       method: 'POST',

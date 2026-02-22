@@ -17,7 +17,7 @@ export const transformTodoToTask = (todo: any): Task => {
     createdAt: todo.created_at,
     updatedAt: todo.updated_at,
     priority: todo.priority || 'medium', // Default priority if not provided
-    dueDate: todo.due_date || todo.dueDate, // Handle different possible field names
+    due_date: todo.due_date || todo.dueDate, // Handle different possible field names
   };
 };
 
