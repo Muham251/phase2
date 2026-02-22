@@ -34,7 +34,7 @@ export default function TaskForm({ task, onSuccess }: TaskFormProps) {
       title,
       description,
       priority,
-      dueDate,
+      due_date: dueDate || undefined, 
     };
 
     try {
