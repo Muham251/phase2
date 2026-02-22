@@ -19,8 +19,8 @@ export default function TaskForm({ task, onSuccess }: TaskFormProps) {
 
   useEffect(() => {
     if (task) {
-      setTitle(task.title);
-      setDescription(task.description);
+      setTitle(task.title || "");
+      setDescription(task.description || "");
       setPriority(task.priority || "medium");
       setDueDate(task.due_date || "");
     }
