@@ -23,7 +23,7 @@ export interface Task {
   description?: string;
   completed: boolean; 
   status?: "pending" | "completed";
-  due_date?: string;
+  due_date?: string; 
   priority?: "low" | "medium" | "high";
   tags?: string[];
   createdAt?: string | number | Date;
