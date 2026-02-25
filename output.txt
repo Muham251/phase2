@@ -1,3 +1,0 @@
-I am currently in a waiting state for your instructions.
-
-To move forward, I require the detailed specifications (the content for the `spec.md` file) for **Phase III – AI-Powered Todo Chatbot**. I cannot initiate new work without these defined requirements.
