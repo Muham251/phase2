@@ -149,9 +149,9 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate }) => {
                     {task.description}
                   </p>
                 )}
-                {task.due_date && (
+                {task.dueDate && (
                   <p className="text-xs text-foreground/60 mt-2">
-                    Due: {formatDate(task.due_date)}
+                    Due: {formatDate(task.dueDate)}
                   </p>
                 )}
               </div>

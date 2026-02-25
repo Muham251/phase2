@@ -22,7 +22,7 @@ export default function TaskForm({ task, onSuccess }: TaskFormProps) {
       setTitle(task.title || "");
       setDescription(task.description || "");
       setPriority(task.priority || "medium");
-      setDueDate(task.due_date || "");
+      setDueDate(task.dueDate || "");
     }
   }, [task]);
 

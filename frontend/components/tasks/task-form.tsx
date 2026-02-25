@@ -53,7 +53,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
           title: formData.title,
           description: formData.description,
           priority: formData.priority,
-          due_date: formData.dueDate || undefined, 
+          dueDate: formData.dueDate || undefined, 
         });
         if (onTaskUpdated) {
           onTaskUpdated(response);
@@ -64,7 +64,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
           title: formData.title,
           description: formData.description,
           priority: formData.priority,
-          due_date: formData.dueDate || undefined, // map to API
+          dueDate: formData.dueDate || undefined, // map to API
         });
         if (onTaskCreated) {
           onTaskCreated(response);
@@ -190,3 +190,4 @@ export const TaskForm: React.FC<TaskFormProps> = ({
     </motion.div>
   );
 };
+

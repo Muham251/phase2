@@ -22,8 +22,9 @@ export interface Task {
   title: string;
   description?: string;
   completed: boolean; 
+  userId: number;
   status?: "pending" | "completed";
-  due_date?: string; 
+  dueDate?: string; 
   priority?: "low" | "medium" | "high";
   tags?: string[];
   createdAt?: string | number | Date;
@@ -47,9 +48,11 @@ export interface ErrorResponse {
 }
 
 
-interface AuthResponse {
+
+export interface AuthResponse {
   user?: User;
   access_token?: string;
   token?: string;
   expires_in?: number;
 }
+
